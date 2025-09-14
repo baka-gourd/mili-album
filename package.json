@@ -47,12 +47,15 @@
 	},
 	"dependencies": {
 		"@meilisearch/instant-meilisearch": "^0.27.0",
+		"argon2": "^0.44.0",
 		"better-sqlite3": "^11.8.0",
-		"daisyui": "^5.1.10"
+		"daisyui": "^5.1.10",
+		"jose": "^6.1.0"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"@tailwindcss/oxide",
+			"argon2",
 			"better-sqlite3",
 			"esbuild"
 		]

@@ -1,4 +1,88 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from en!"
+	"hello_world": "Hello, {name} from en!",
+	"profile": {
+		"title": "Profile",
+		"avatar": {
+			"title": "Avatar URL",
+			"preview": "Preview",
+			"placeholder": "https://example.com/avatar.jpg",
+			"hint": "Enter a publicly accessible image URL",
+			"reset": "Reset",
+			"save": "Save Avatar",
+			"success": "Avatar updated successfully!",
+			"error": "Failed to update avatar, please try again later"
+		},
+		"password": {
+			"title": "Change Password",
+			"current": "Current Password",
+			"new": "New Password",
+			"confirm": "Confirm New Password",
+			"hint": "At least 6 characters",
+			"update": "Update Password",
+			"success": "Password updated successfully!",
+			"error": {
+				"tooShort": "New password must be at least 6 characters",
+				"mismatch": "Passwords do not match",
+				"notFound": "User not found",
+				"incorrect": "Current password is incorrect",
+				"unknown": "Failed to update password, please try again later"
+			}
+		}
+	},
+	"login": {
+		"title": "Login",
+		"username": "Username",
+		"password": "Password",
+		"action": "Submit"
+	},
+	"register": {
+		"title": "Register",
+		"username": "Username",
+		"password": "Password",
+		"inviteCode": "Invite Code",
+		"action": "Submit"
+	},
+	"admin": {
+		"title": "User Management",
+		"username": "Username",
+		"password": "Password",
+		"roles": "Permissions",
+		"actions": "Actions",
+		"edit": "Edit",
+		"save": "Save",
+		"cancel": "Cancel",
+		"delete": "Delete",
+		"register": "Register User",
+		"newPassword": "New Password (leave empty to keep current)",
+		"inviteCodes": "Invite Codes",
+		"codeValue": "Code",
+		"codeStatus": "Status",
+		"createCode": "Create Code",
+		"customCode": "Custom Code",
+		"customValue": "Custom Value",
+		"active": "Active",
+		"inactive": "Inactive",
+		"toggleStatus": "Toggle Status",
+		"deleteCode": "Delete Code",
+		"confirmDelete": "Are you sure you want to delete this?",
+		"tabs": {
+			"users": "Users",
+			"inviteCodes": "Invite Codes"
+		},
+		"err": {
+			"permissionDenied": "Permission denied",
+			"invalidUserId": "Invalid user ID",
+			"invalidCodeId": "Invalid code ID",
+			"noData": "No data provided for update",
+			"updateError": "Error updating user",
+			"deleteError": "Error deleting item",
+			"codeExistsError": "This invite code already exists",
+			"usernameExists": "This username already exists"
+		},
+		"success": "User updated successfully",
+		"deleteSuccess": "Item deleted successfully",
+		"codeCreated": "Invite code created successfully",
+		"codeUpdated": "Invite code updated successfully"
+	}
 }
