@@ -84,5 +84,40 @@
 		"deleteSuccess": "Item deleted successfully",
 		"codeCreated": "Invite code created successfully",
 		"codeUpdated": "Invite code updated successfully"
+	},
+	"create": {
+		"title": "Create Item",
+		"fields": {
+			"name": "Name",
+			"description": "Description",
+			"tags": "Tags",
+			"cover": "Cover URL"
+		},
+		"placeholder": {
+			"name": "Enter name",
+			"description": "Enter description",
+			"tags": "Comma separated",
+			"cover": "https://example.com/cover.jpg"
+		},
+		"hint": {
+			"tags": "Use comma to separate multiple tags",
+			"cover": "Enter a publicly accessible image URL"
+		},
+		"actions": {
+			"submit": "Create",
+			"reset": "Reset"
+		},
+		"toast": {
+			"success": "Created successfully!",
+			"error": "Creation failed."
+		},
+		"error": {
+			"nameRequired": "Name is required",
+			"coverInvalid": "Cover URL is invalid"
+		},
+		"preview": {
+			"title": "Preview",
+			"empty": "No image"
+		}
 	}
 }

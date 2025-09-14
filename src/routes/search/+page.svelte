@@ -23,11 +23,22 @@
 
 	type Hit = {
 		id: string | number;
+		cover?: string;
 		title?: string;
+		titleRomaji?: string;
+		titlePinyin?: string;
 		description?: string;
-		poster?: string;
+		releaseArtist?: string;
+		artists?: string[];
 		genres?: string[];
-		release_date?: string;
+		releaseDate?: string;
+		customTags?: string[];
+		relatedReleases?: string[];
+		releaseCatlogNumber?: string;
+		releaseBarcode?: string;
+		releaseItems?: string[];
+		externalUrls?: string[];
+		extendData?: Record<string, string>;
 	};
 
 	// 统一的搜索样式常量（顶部/底部两处共用）
