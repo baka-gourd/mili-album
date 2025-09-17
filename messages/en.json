@@ -86,26 +86,48 @@
 		"codeUpdated": "Invite code updated successfully"
 	},
 	"create": {
-		"title": "Create Item",
+		"title": "Basic Information",
 		"fields": {
 			"name": "Name",
 			"description": "Description",
 			"tags": "Tags",
-			"cover": "Cover URL"
+			"cover": "Cover URL",
+			"releaseName": "Release Name",
+			"releaseArtist": "Release Artist",
+			"publisher": "Publisher",
+			"releaseDate": "Release Date",
+			"catalogNumber": "Catalog Number",
+			"medium": "Release Medium",
+			"artists": "Artists",
+			"releaseDescription": "Release Description",
+			"genres": "Genres",
+			"customTags": "Custom Tags",
+			"relatedWebsites": "Related Websites",
+			"moreInfo": "More Information",
+			"relatedReleases": "Related Releases",
+			"metaQuality": "Metadata Quality",
+			"audioQuality": "Audio Quality",
+			"releaseAudio": "Release Audio",
+			"advancedInfo": "Advanced Extended Information"
 		},
 		"placeholder": {
 			"name": "Enter name",
 			"description": "Enter description",
 			"tags": "Comma separated",
-			"cover": "https://example.com/cover.jpg"
+			"cover": "https://example.com/cover.jpg",
+			"releaseDate": "yyyy-MM-DD",
+			"json": "Enter JSON"
 		},
 		"hint": {
 			"tags": "Use comma to separate multiple tags",
-			"cover": "Enter a publicly accessible image URL"
+			"cover": "Enter a publicly accessible image URL",
+			"artists": "Related to artists"
 		},
 		"actions": {
 			"submit": "Create",
-			"reset": "Reset"
+			"reset": "Reset",
+			"save": "Save",
+			"cancel": "Cancel"
 		},
 		"toast": {
 			"success": "Created successfully!",
@@ -118,6 +140,70 @@
 		"preview": {
 			"title": "Preview",
 			"empty": "No image"
+		},
+		"options": {
+			"medium": {
+				"default": "Release Medium",
+				"cd": "CD",
+				"dvd": "DVD",
+				"bd": "BD",
+				"digital": "Digital",
+				"others": "Others"
+			}
+		},
+		"components": {
+			"listInput": {
+				"placeholder": "Enter link...",
+				"defaultType": "Link",
+				"edit": "Edit",
+				"delete": "Delete",
+				"add": "Add"
+			}
+		}
+	},
+	"edit": {
+		"title": "Edit Release",
+		"subtitle": "Update release information",
+		"actions": {
+			"update": "Update Release",
+			"updating": "Updating...",
+			"reset": "Reset to Original",
+			"cancel": "Cancel"
+		},
+		"toast": {
+			"success": "Release updated successfully!",
+			"error": "Failed to update release"
+		},
+		"error": {
+			"nameRequired": "Name is required",
+			"coverInvalid": "Cover URL is invalid",
+			"jsonInvalid": "Invalid JSON format in extended data"
+		}
+	},
+	"release": {
+		"detail": {
+			"title": "Meili Album",
+			"unknownAlbum": "Unknown Album",
+			"unknownDate": "Unknown",
+			"unknownQuality": "Unknown",
+			"albumCover": "Album Cover",
+			"releaseInfo": "Release Information",
+			"releaseDate": "Release Date",
+			"publisher": "Publisher",
+			"releaseType": "Release Type",
+			"catalogNumber": "Catalog Number",
+			"participatingArtists": "Participating Artists",
+			"categoryTags": "Category Tags",
+			"musicGenres": "Music Genres",
+			"customTags": "Custom Tags",
+			"releaseContent": "Release Content",
+			"externalLinks": "External Links",
+			"relatedReleases": "Related Releases",
+			"extendedInfo": "Extended Information",
+			"metadataQuality": "Metadata Quality",
+			"audioQuality": "Audio Quality",
+			"editRelease": "Edit Release",
+			"goBack": "Go Back"
 		}
 	}
 }

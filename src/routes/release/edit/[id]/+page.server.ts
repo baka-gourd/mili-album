@@ -1,5 +1,5 @@
 import type { PageServerLoad, Actions } from './$types';
-import { fail } from '@sveltejs/kit';
+import { fail, error } from '@sveltejs/kit';
 import { getIndex } from '$lib/server/meili/index.js';
 import { autoConvertText } from '$lib/server/utils/textConverter.js';
 
@@ -35,12 +35,57 @@ function isValidUrl(u: string) {
 	}
 }
 
-export const load: PageServerLoad = async () => {
-	return {};
+export const load: PageServerLoad = async ({ params }) => {
+	const { id } = params;
+
+	if (!id) {
+		throw error(400, 'Release ID is required');
+	}
+
+	try {
+		const index = getIndex();
+		const result = await index.getDocument(id);
+
+		if (!result) {
+			throw error(404, 'Release not found');
+		}
+
+		// Return the release data for editing
+		return {
+			release: result as Release
+		};
+	} catch (meiliError) {
+		console.error('Failed to load release from MeiliSearch:', meiliError);
+		throw error(500, 'Failed to load release data');
+	}
 };
 
 export const actions: Actions = {
-	create: async ({ request }) => {
+	delete: async ({ params }) => {
+		const { id } = params;
+
+		if (!id) {
+			return fail(400, { ok: false, error: 'Release ID is required' });
+		}
+
+		try {
+			const index = getIndex();
+			await index.deleteDocument(id);
+
+			return { ok: true, deleted: true, id: id };
+		} catch (meiliError) {
+			console.error('Failed to delete from MeiliSearch:', meiliError);
+			return fail(500, { ok: false, error: 'Failed to delete release' });
+		}
+	},
+
+	update: async ({ request, params }) => {
+		const { id } = params;
+
+		if (!id) {
+			return fail(400, { ok: false, error: 'Release ID is required' });
+		}
+
 		try {
 			const formData = await request.formData();
 
@@ -87,15 +132,12 @@ export const actions: Actions = {
 				return fail(400, { ok: false, error: 'invalidReleaseType' });
 			}
 
-			// Generate a unique ID for the release
-			const releaseId = crypto.randomUUID();
-
 			// Auto-convert title to romaji and pinyin
 			const titleConverted = await autoConvertText(title?.trim() || '');
 
 			// Prepare release data for MeiliSearch
 			const releaseData: Release = {
-				id: releaseId,
+				id: id, // Use the existing ID
 				title: title?.trim(),
 				titleRomaji: titleConverted.romaji || undefined,
 				titlePinyin: titleConverted.pinyin || undefined,
@@ -117,18 +159,18 @@ export const actions: Actions = {
 				extendData: extendData || {}
 			};
 
-			// Save to MeiliSearch
+			// Update in MeiliSearch
 			try {
 				const index = getIndex();
-				await index.addDocuments([releaseData]);
+				await index.addDocuments([releaseData]); // addDocuments will update if ID exists
 			} catch (meiliError) {
-				console.error('Failed to save to MeiliSearch:', meiliError);
-				// Continue execution - we'll still return success but log the error
+				console.error('Failed to update in MeiliSearch:', meiliError);
+				return fail(500, { ok: false, error: 'Failed to update release' });
 			}
 
-			return { ok: true, id: releaseId };
+			return { ok: true, id: id };
 		} catch (error) {
-			console.error('Error processing release creation:', error);
+			console.error('Error processing release update:', error);
 			return fail(500, { ok: false, error: 'serverError' });
 		}
 	}

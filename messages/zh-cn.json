@@ -97,26 +97,48 @@
 		"codeUpdated": "邀请码更新成功"
 	},
 	"create": {
-		"title": "新建条目",
+		"title": "基本信息",
 		"fields": {
 			"name": "名称",
 			"description": "描述",
 			"tags": "标签",
-			"cover": "封面 URL"
+			"cover": "封面 URL",
+			"releaseName": "发行名称",
+			"releaseArtist": "发行作者",
+			"publisher": "发行者",
+			"releaseDate": "发行日期",
+			"catalogNumber": "发行编号",
+			"medium": "发行介质",
+			"artists": "相关作者",
+			"releaseDescription": "发行简介",
+			"genres": "流派",
+			"customTags": "自定义标签",
+			"relatedWebsites": "相关网站",
+			"moreInfo": "更多信息",
+			"relatedReleases": "相关发行版",
+			"metaQuality": "元数据评分",
+			"audioQuality": "音频质量评分",
+			"releaseAudio": "发行版音频",
+			"advancedInfo": "高级拓展信息"
 		},
 		"placeholder": {
 			"name": "请输入名称",
 			"description": "请输入描述",
 			"tags": "多个用逗号分隔",
-			"cover": "https://example.com/cover.jpg"
+			"cover": "https://example.com/cover.jpg",
+			"releaseDate": "yyyy-MM-DD",
+			"json": "输入 JSON"
 		},
 		"hint": {
 			"tags": "多个标签请用逗号分隔",
-			"cover": "请输入可公开访问的图片地址"
+			"cover": "请输入可公开访问的图片地址",
+			"artists": "有关作者"
 		},
 		"actions": {
 			"submit": "创建",
-			"reset": "重置"
+			"reset": "重置",
+			"save": "保存",
+			"cancel": "取消"
 		},
 		"toast": {
 			"success": "创建成功！",
@@ -129,6 +151,70 @@
 		"preview": {
 			"title": "预览",
 			"empty": "暂无图片"
+		},
+		"options": {
+			"medium": {
+				"default": "发行介质",
+				"cd": "CD",
+				"dvd": "DVD",
+				"bd": "BD",
+				"digital": "数字版",
+				"others": "其他"
+			}
+		},
+		"components": {
+			"listInput": {
+				"placeholder": "输入链接...",
+				"defaultType": "链接",
+				"edit": "编辑",
+				"delete": "删除",
+				"add": "添加"
+			}
+		}
+	},
+	"edit": {
+		"title": "编辑发行版",
+		"subtitle": "更新发行版信息",
+		"actions": {
+			"update": "更新发行版",
+			"updating": "更新中...",
+			"reset": "重置为原始值",
+			"cancel": "取消"
+		},
+		"toast": {
+			"success": "发行版更新成功！",
+			"error": "更新发行版失败"
+		},
+		"error": {
+			"nameRequired": "名称必填",
+			"coverInvalid": "封面 URL 非法",
+			"jsonInvalid": "拓展数据中的 JSON 格式无效"
+		}
+	},
+	"release": {
+		"detail": {
+			"title": "Meili Album",
+			"unknownAlbum": "未知专辑",
+			"unknownDate": "未知",
+			"unknownQuality": "未知",
+			"albumCover": "专辑封面",
+			"releaseInfo": "发行信息",
+			"releaseDate": "发行日期",
+			"publisher": "发行商",
+			"releaseType": "发行类型",
+			"catalogNumber": "目录编号",
+			"participatingArtists": "参与艺术家",
+			"categoryTags": "分类标签",
+			"musicGenres": "音乐风格",
+			"customTags": "自定义标签",
+			"releaseContent": "发行内容",
+			"externalLinks": "外部链接",
+			"relatedReleases": "相关发行",
+			"extendedInfo": "扩展信息",
+			"metadataQuality": "元数据质量",
+			"audioQuality": "音频质量",
+			"editRelease": "编辑发行",
+			"goBack": "返回"
 		}
 	}
 }

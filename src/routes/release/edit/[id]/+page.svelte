@@ -3,6 +3,9 @@
 	import TagInput from '$lib/components/TagInput.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import { goto } from '$app/navigation';
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
 
 	const knownSites: { prefix: string; label: string; icon?: string }[] = [
 		{ prefix: 'https://musicbrainz.org', label: 'Musicbrainz' },
@@ -19,25 +22,30 @@
 		Others: 'Others'
 	};
 
-	let genres: string[] = $state([]);
-	let customTags: string[] = $state([]);
-	let relatedReleases: string[] = $state([]);
-	let artists: string[] = $state([]);
-	let releaseItems: string[] = $state([]);
-	let externalUrls: string[] = $state([]);
-	let releaseArtist: string = $state('');
-	let title: string = $state('');
-	let publisher: string = $state('');
-	let description: string = $state('');
-	let metaQuality = $state(1);
-	let audioQuality = $state(60);
-	let releaseCatlogNumber: string = $state('');
-	let releaseType: string = $state('CD'); // Store English value
-	let releaseDate: string = $state('');
-	let extendJson = $state('');
+	// Initialize form data with existing release data
+	let genres: string[] = $state(data.release.genres || []);
+	let customTags: string[] = $state(data.release.customTags || []);
+	let relatedReleases: string[] = $state(data.release.relatedReleases || []);
+	let artists: string[] = $state(data.release.artists || []);
+	let releaseItems: string[] = $state(data.release.releaseItems || []);
+	let externalUrls: string[] = $state(data.release.externalUrls || []);
+	let releaseArtist: string = $state(data.release.releaseArtist || '');
+	let title: string = $state(data.release.title || '');
+	let publisher: string = $state(data.release.publisher || '');
+	let description: string = $state(data.release.description || '');
+	let metaQuality = $state(data.release.metadataQuality || 1);
+	let audioQuality = $state(data.release.audioQuality || 60);
+	let releaseCatlogNumber: string = $state(data.release.releaseCatlogNumber || '');
+	let releaseType: string = $state(data.release.releaseType || 'CD'); // Store English value
+	let releaseDate: string = $state(data.release.releaseDate || '');
+	let extendJson = $state(
+		data.release.extendData ? JSON.stringify(data.release.extendData, null, 2) : ''
+	);
 	let loading = $state(false);
-	let cover = $state('');
+	let deleting = $state(false);
+	let cover = $state(data.release.cover || '');
 	let toast: { type: 'success' | 'error'; text: string } | null = $state(null);
+	let showDeleteConfirm = $state(false);
 
 	function isValidUrl(u: string) {
 		try {
@@ -50,17 +58,17 @@
 
 	function validateForm() {
 		if (!title.trim()) {
-			toast = { type: 'error', text: m['create.error.nameRequired']() };
+			toast = { type: 'error', text: m['edit.error.nameRequired']() };
 			return false;
 		}
 		if (cover && !isValidUrl(cover)) {
-			toast = { type: 'error', text: m['create.error.coverInvalid']() };
+			toast = { type: 'error', text: m['edit.error.coverInvalid']() };
 			return false;
 		}
 		return true;
 	}
 
-	async function submitRelease() {
+	async function updateRelease() {
 		if (!validateForm()) return;
 
 		loading = true;
@@ -77,7 +85,7 @@
 						Object.entries(parsed).map(([key, value]) => [key, String(value)])
 					);
 				} catch (e) {
-					toast = { type: 'error', text: 'Invalid JSON format in extended data' };
+					toast = { type: 'error', text: m['edit.error.jsonInvalid']() };
 					loading = false;
 					return;
 				}
@@ -107,7 +115,7 @@
 			const formData = new FormData();
 			formData.append('data', JSON.stringify(releaseData));
 
-			const response = await fetch('?/create', {
+			const response = await fetch('?/update', {
 				method: 'POST',
 				body: formData
 			});
@@ -115,49 +123,44 @@
 			const result = await response.json();
 
 			if (result.type === 'success' || result.ok) {
-				toast = { type: 'success', text: m['create.toast.success']() };
-				// Optionally redirect or reset form
-				const data = JSON.parse(result.data);
-				const idIndex = data[0].id;
-				if (idIndex) {
-					setTimeout(() => {
-						goto(`/release/edit/${data[idIndex]}`);
-					}, 2000);
-				} else {
-					goto(`/`);
-				}
+				toast = { type: 'success', text: m['edit.toast.success']() };
+				// Optionally redirect or stay on page
+				setTimeout(() => {
+					goto('/');
+				}, 2000);
 			} else {
-				const errorMsg = result.data?.error || result.error || m['create.toast.error']();
+				const errorMsg = result.data?.error || result.error || m['edit.toast.error']();
 				toast = { type: 'error', text: errorMsg };
 			}
 		} catch (error) {
-			console.error('Submit error:', error);
-			toast = { type: 'error', text: m['create.toast.error']() };
+			console.error('Update error:', error);
+			toast = { type: 'error', text: m['edit.toast.error']() };
 		} finally {
 			loading = false;
 		}
 	}
 
 	function resetForm() {
-		title = '';
-		releaseArtist = '';
-		publisher = '';
-		description = '';
-		releaseDate = '';
-		releaseCatlogNumber = '';
-		releaseType = 'CD';
-		cover = '';
-		extendJson = '';
-		genres = [];
-		customTags = [];
-		relatedReleases = [];
-		artists = [];
-		releaseItems = [];
-		externalUrls = [];
-		metaQuality = 1;
-		audioQuality = 60;
+		// Reset to original data
+		title = data.release.title || '';
+		releaseArtist = data.release.releaseArtist || '';
+		publisher = data.release.publisher || '';
+		description = data.release.description || '';
+		releaseDate = data.release.releaseDate || '';
+		releaseCatlogNumber = data.release.releaseCatlogNumber || '';
+		releaseType = data.release.releaseType || 'CD';
+		cover = data.release.cover || '';
+		extendJson = data.release.extendData ? JSON.stringify(data.release.extendData, null, 2) : '';
+		genres = data.release.genres || [];
+		customTags = data.release.customTags || [];
+		relatedReleases = data.release.relatedReleases || [];
+		artists = data.release.artists || [];
+		releaseItems = data.release.releaseItems || [];
+		externalUrls = data.release.externalUrls || [];
+		metaQuality = data.release.metadataQuality || 1;
+		audioQuality = data.release.audioQuality || 60;
 		toast = null;
-		updatePreview('');
+		updatePreview(cover);
 	}
 
 	let previewUrl: string = $state('');
@@ -173,10 +176,71 @@
 	$effect(() => {
 		updatePreview(cover);
 	});
+
+	// Initialize preview on load
+	$effect(() => {
+		updatePreview(data.release.cover || '');
+	});
+
+	async function deleteRelease() {
+		deleting = true;
+		toast = null;
+
+		try {
+			// 使用FormData发送请求，符合SvelteKit actions的期望
+			const formData = new FormData();
+
+			const response = await fetch('?/delete', {
+				method: 'POST',
+				body: formData
+			});
+
+			const result = await response.json();
+
+			if (result.type === 'success' || result.ok) {
+				toast = { type: 'success', text: '专辑已成功删除' };
+				// 延迟跳转到首页
+				setTimeout(() => {
+					goto('/');
+				}, 1500);
+			} else {
+				const errorMsg = result.data?.error || result.error || '删除失败';
+				toast = { type: 'error', text: errorMsg };
+			}
+		} catch (error) {
+			console.error('Delete error:', error);
+			toast = { type: 'error', text: '删除失败' };
+		} finally {
+			deleting = false;
+			showDeleteConfirm = false;
+		}
+	}
+
+	function confirmDelete() {
+		showDeleteConfirm = true;
+	}
+
+	function cancelDelete() {
+		showDeleteConfirm = false;
+	}
+
+	// 处理键盘事件以支持可访问性
+	function handleBackdropKeydown(event: KeyboardEvent) {
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			cancelDelete();
+		}
+	}
 </script>
 
 <div class="mx-auto p-6 md:columns-2">
 	<div class="space-y-4">
+		<!-- Page Title -->
+		<div class="mb-4">
+			<h1 class="text-3xl font-bold">{m['edit.title']()}</h1>
+			<p class="text-base-content/70">ID: {data.release.id}</p>
+		</div>
+
 		<!-- 基本信息分组 -->
 		<fieldset class="fieldset bg-base-200 border-base-300 rounded-box p-4">
 			<legend class="fieldset-legend text-2xl">{m['create.title']()}</legend>
@@ -321,17 +385,56 @@
 		</fieldset>
 
 		<!-- 操作按钮 -->
-		<div class="flex gap-4">
-			<button type="button" class="btn btn-primary" disabled={loading} onclick={submitRelease}>
+		<div class="flex gap-4 flex-wrap">
+			<button
+				type="button"
+				class="btn btn-primary"
+				disabled={loading || deleting}
+				onclick={updateRelease}
+			>
 				{#if loading}
 					<span class="loading loading-spinner"></span>
-					loading
+					{m['edit.actions.updating']()}
 				{:else}
-					{m['create.actions.submit']()}
+					{m['edit.actions.update']()}
 				{/if}
 			</button>
-			<button type="button" class="btn btn-ghost" disabled={loading} onclick={resetForm}>
-				{m['create.actions.reset']()}
+			<button
+				type="button"
+				class="btn btn-ghost"
+				disabled={loading || deleting}
+				onclick={resetForm}
+			>
+				{m['edit.actions.reset']()}
+			</button>
+			<button
+				type="button"
+				class="btn btn-outline"
+				disabled={loading || deleting}
+				onclick={() => goto('/')}
+			>
+				{m['edit.actions.cancel']()}
+			</button>
+			<button
+				type="button"
+				class="btn btn-error"
+				disabled={loading || deleting}
+				onclick={confirmDelete}
+			>
+				{#if deleting}
+					<span class="loading loading-spinner"></span>
+					删除中...
+				{:else}
+					<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+						></path>
+					</svg>
+					删除专辑
+				{/if}
 			</button>
 		</div>
 	</div>
@@ -342,6 +445,39 @@
 		</div>
 	{/if}
 </div>
+
+<!-- 删除确认对话框 -->
+{#if showDeleteConfirm}
+	<div class="modal modal-open">
+		<div class="modal-box">
+			<h3 class="font-bold text-lg text-error">确认删除专辑</h3>
+			<p class="py-4">
+				您确定要删除专辑 <strong>"{title}"</strong> 吗？
+				<br />
+				<span class="text-warning">此操作不可撤销！</span>
+			</p>
+			<div class="modal-action">
+				<button class="btn btn-ghost" onclick={cancelDelete} disabled={deleting}> 取消 </button>
+				<button class="btn btn-error" onclick={deleteRelease} disabled={deleting}>
+					{#if deleting}
+						<span class="loading loading-spinner loading-sm"></span>
+						删除中...
+					{:else}
+						确认删除
+					{/if}
+				</button>
+			</div>
+		</div>
+		<div
+			class="modal-backdrop"
+			onclick={cancelDelete}
+			onkeydown={handleBackdropKeydown}
+			role="button"
+			tabindex="0"
+			aria-label="关闭对话框"
+		></div>
+	</div>
+{/if}
 
 <style>
 	.placeholder-bg {

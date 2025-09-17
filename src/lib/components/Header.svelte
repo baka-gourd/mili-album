@@ -32,6 +32,8 @@
 	</div>
 
 	<div class="flex items-center gap-2">
+		<button class="btn btn-primary" onclick={() => goto('/release/create')}>新建</button>
+
 		<details class="dropdown dropdown-end">
 			<summary class="btn btn-circle m-1" title="Language">
 				<svg
