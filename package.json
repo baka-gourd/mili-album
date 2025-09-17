@@ -46,11 +46,18 @@
 		"vite-plugin-devtools-json": "^1.0.0"
 	},
 	"dependencies": {
+		"@kasaki-js/darwin-arm64": "file:dependencies\\kasaki-js-darwin-arm64-0.1.0.tgz",
+		"@kasaki-js/darwin-x64": "file:dependencies\\kasaki-js-darwin-x64-0.1.0.tgz",
+		"@kasaki-js/linux-arm64-gnu": "file:dependencies\\kasaki-js-linux-arm64-gnu-0.1.0.tgz",
+		"@kasaki-js/linux-x64-gnu": "file:dependencies\\kasaki-js-linux-x64-gnu-0.1.0.tgz",
+		"@kasaki-js/win32-x64-msvc": "file:dependencies\\kasaki-js-win32-x64-msvc-0.1.0.tgz",
 		"@meilisearch/instant-meilisearch": "^0.27.0",
 		"argon2": "^0.44.0",
 		"better-sqlite3": "^11.8.0",
 		"daisyui": "^5.1.10",
-		"jose": "^6.1.0"
+		"jose": "^6.1.0",
+		"kasaki": "file:dependencies\\kasaki-0.1.0.tgz",
+		"pinyin": "^4.0.0"
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [

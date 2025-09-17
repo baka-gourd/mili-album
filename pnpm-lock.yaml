@@ -8,6 +8,21 @@ importers:
 
   .:
     dependencies:
+      '@kasaki-js/darwin-arm64':
+        specifier: file:dependencies\kasaki-js-darwin-arm64-0.1.0.tgz
+        version: file:dependencies/kasaki-js-darwin-arm64-0.1.0.tgz
+      '@kasaki-js/darwin-x64':
+        specifier: file:dependencies\kasaki-js-darwin-x64-0.1.0.tgz
+        version: file:dependencies/kasaki-js-darwin-x64-0.1.0.tgz
+      '@kasaki-js/linux-arm64-gnu':
+        specifier: file:dependencies\kasaki-js-linux-arm64-gnu-0.1.0.tgz
+        version: file:dependencies/kasaki-js-linux-arm64-gnu-0.1.0.tgz
+      '@kasaki-js/linux-x64-gnu':
+        specifier: file:dependencies\kasaki-js-linux-x64-gnu-0.1.0.tgz
+        version: file:dependencies/kasaki-js-linux-x64-gnu-0.1.0.tgz
+      '@kasaki-js/win32-x64-msvc':
+        specifier: file:dependencies\kasaki-js-win32-x64-msvc-0.1.0.tgz
+        version: file:dependencies/kasaki-js-win32-x64-msvc-0.1.0.tgz
       '@meilisearch/instant-meilisearch':
         specifier: ^0.27.0
         version: 0.27.0
@@ -23,6 +38,12 @@ importers:
       jose:
         specifier: ^6.1.0
         version: 6.1.0
+      kasaki:
+        specifier: file:dependencies\kasaki-0.1.0.tgz
+        version: file:dependencies/kasaki-0.1.0.tgz
+      pinyin:
+        specifier: ^4.0.0
+        version: 4.0.0
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.5
@@ -639,6 +660,36 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
+  '@kasaki-js/darwin-arm64@file:dependencies/kasaki-js-darwin-arm64-0.1.0.tgz':
+    resolution: {integrity: sha512-s7wsHgt7ayu6EICBBhNS7mwbqHfhEmMm2GKwJpoPH7mt2/y/KwzpHUNjfTny8aEAtOSEJlElqrGDlePvMmPlAw==, tarball: file:dependencies/kasaki-js-darwin-arm64-0.1.0.tgz}
+    version: 0.1.0
+    cpu: [arm64]
+    os: [darwin]
+
+  '@kasaki-js/darwin-x64@file:dependencies/kasaki-js-darwin-x64-0.1.0.tgz':
+    resolution: {integrity: sha512-mMZiaXcD+pMDelVBzQn44Z6SwX2Kh3714Y2vNFtNRyOHVpOEQn2FTgK1iFrEpSDXDHrix2H1msxnmFI0nxI1Zg==, tarball: file:dependencies/kasaki-js-darwin-x64-0.1.0.tgz}
+    version: 0.1.0
+    cpu: [x64]
+    os: [darwin]
+
+  '@kasaki-js/linux-arm64-gnu@file:dependencies/kasaki-js-linux-arm64-gnu-0.1.0.tgz':
+    resolution: {integrity: sha512-CG9oUY9rW9wmYSnIiEFmBJfqkEfZTMA58EKIv3kENyv4u2WGkSF/mpEYn/TopSMTffacdaZ+W7TldVXJNPiGRA==, tarball: file:dependencies/kasaki-js-linux-arm64-gnu-0.1.0.tgz}
+    version: 0.1.0
+    cpu: [arm64]
+    os: [linux]
+
+  '@kasaki-js/linux-x64-gnu@file:dependencies/kasaki-js-linux-x64-gnu-0.1.0.tgz':
+    resolution: {integrity: sha512-O/H3uGbAzWh+GIXkOMSjEb6he6UqGPCLdXMqPOxXenUY2GLvMWQ4xV2dzB+jhUuRYBn9jwGp2VlkIOmYa9uM4w==, tarball: file:dependencies/kasaki-js-linux-x64-gnu-0.1.0.tgz}
+    version: 0.1.0
+    cpu: [x64]
+    os: [linux]
+
+  '@kasaki-js/win32-x64-msvc@file:dependencies/kasaki-js-win32-x64-msvc-0.1.0.tgz':
+    resolution: {integrity: sha512-WyuYa36GAdGc+VPbVW+cxUyWSz3/NlgZ1QfsyiykV8rGmMvB7JIA4+DSVETJII0UYrJD/eTlZ79or2gPfCXvMQ==, tarball: file:dependencies/kasaki-js-win32-x64-msvc-0.1.0.tgz}
+    version: 0.1.0
+    cpu: [x64]
+    os: [win32]
+
   '@lix-js/sdk@0.4.7':
     resolution: {integrity: sha512-pRbW+joG12L0ULfMiWYosIW0plmW4AsUdiPCp+Z8rAsElJ+wJ6in58zhD3UwUcd4BNcpldEGjg6PdA7e0RgsDQ==}
     engines: {node: '>=18'}
@@ -648,6 +699,9 @@ packages:
 
   '@meilisearch/instant-meilisearch@0.27.0':
     resolution: {integrity: sha512-wydZj3FLElIpK6Ceu5RfihgFMHkxB8HWhwWfRfubb3JR08phttU14DKdNk98RC5iTPwRzUQSk1cl+/gBmUGBUg==}
+
+  '@neon-rs/load@0.1.82':
+    resolution: {integrity: sha512-H4Gu2o5kPp+JOEhRrOQCnJnf7X6sv9FBLttM/wSbb4efsgFWeHzfU/ItZ01E5qqEk+U6QGdeVO7lxXIAtYHr5A==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1093,6 +1147,10 @@ packages:
 
   color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+
+  commander@1.1.1:
+    resolution: {integrity: sha512-71Rod2AhcH3JhkBikVpNd0pA+fWsmAaVoti6OR38T76chA7vE3pSerS0Jor4wDw+tOueD2zLVvFOw5H0Rcj7rA==}
+    engines: {node: '>= 0.6.x'}
 
   commander@11.1.0:
     resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
@@ -1548,6 +1606,13 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
+  kasaki@file:dependencies/kasaki-0.1.0.tgz:
+    resolution: {integrity: sha512-QmkcWmDWqx4rT4KimP5q6F1JUG5sld1LLK2+VehonYWlm422tt0pxFvxd2rc2sbG/RbuWTs8nB0Bvcjk+wz8kw==, tarball: file:dependencies/kasaki-0.1.0.tgz}
+    version: 0.1.0
+
+  keypress@0.1.0:
+    resolution: {integrity: sha512-x0yf9PL/nx9Nw9oLL8ZVErFAk85/lslwEP7Vz7s5SI1ODXZIgit3C5qyWjw4DxOuO/3Hb4866SQh28a1V1d+WA==}
+
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
@@ -1769,6 +1834,22 @@ packages:
   picomatch@4.0.3:
     resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
     engines: {node: '>=12'}
+
+  pinyin@4.0.0:
+    resolution: {integrity: sha512-vHpV5K+vpp6XUUpZNGRDuHoN+1xcmieM3EWlH4QjSX2kkpG/gVOwpqwV9EOJ9x9c9UERFKeLml5XVSukE/PLgQ==}
+    engines: {install-node: ^18.0.0}
+    hasBin: true
+    peerDependencies:
+      '@node-rs/jieba': ^1.6.0
+      nodejieba: ^3.4.4
+      segmentit: ^2.0.3
+    peerDependenciesMeta:
+      '@node-rs/jieba':
+        optional: true
+      nodejieba:
+        optional: true
+      segmentit:
+        optional: true
 
   postcss-load-config@3.1.4:
     resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
@@ -2464,6 +2545,16 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
+  '@kasaki-js/darwin-arm64@file:dependencies/kasaki-js-darwin-arm64-0.1.0.tgz': {}
+
+  '@kasaki-js/darwin-x64@file:dependencies/kasaki-js-darwin-x64-0.1.0.tgz': {}
+
+  '@kasaki-js/linux-arm64-gnu@file:dependencies/kasaki-js-linux-arm64-gnu-0.1.0.tgz': {}
+
+  '@kasaki-js/linux-x64-gnu@file:dependencies/kasaki-js-linux-x64-gnu-0.1.0.tgz': {}
+
+  '@kasaki-js/win32-x64-msvc@file:dependencies/kasaki-js-win32-x64-msvc-0.1.0.tgz': {}
+
   '@lix-js/sdk@0.4.7':
     dependencies:
       '@lix-js/server-protocol-schema': 0.1.1
@@ -2481,6 +2572,8 @@ snapshots:
   '@meilisearch/instant-meilisearch@0.27.0':
     dependencies:
       meilisearch: 0.51.0
+
+  '@neon-rs/load@0.1.82': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -2902,6 +2995,10 @@ snapshots:
 
   color-name@1.1.4: {}
 
+  commander@1.1.1:
+    dependencies:
+      keypress: 0.1.0
+
   commander@11.1.0: {}
 
   comment-json@4.2.5:
@@ -3312,6 +3409,12 @@ snapshots:
 
   json5@2.2.3: {}
 
+  kasaki@file:dependencies/kasaki-0.1.0.tgz:
+    dependencies:
+      '@neon-rs/load': 0.1.82
+
+  keypress@0.1.0: {}
+
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -3477,6 +3580,10 @@ snapshots:
   picomatch@2.3.1: {}
 
   picomatch@4.0.3: {}
+
+  pinyin@4.0.0:
+    dependencies:
+      commander: 1.1.1
 
   postcss-load-config@3.1.4(postcss@8.5.6):
     dependencies:
