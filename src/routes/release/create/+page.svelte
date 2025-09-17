@@ -121,7 +121,7 @@
 				const idIndex = data[0].id;
 				if (idIndex) {
 					setTimeout(() => {
-						goto(`/release/edit/${data[idIndex]}`);
+						goto(`/release/${data[idIndex]}`);
 					}, 2000);
 				} else {
 					goto(`/`);
