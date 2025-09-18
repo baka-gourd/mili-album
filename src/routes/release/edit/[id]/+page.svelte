@@ -124,9 +124,9 @@
 
 			if (result.type === 'success' || result.ok) {
 				toast = { type: 'success', text: m['edit.toast.success']() };
-				// Optionally redirect or stay on page
+				// 重定向到信息页面
 				setTimeout(() => {
-					goto('/');
+					goto(`/release/${data.release.id}`);
 				}, 2000);
 			} else {
 				const errorMsg = result.data?.error || result.error || m['edit.toast.error']();
@@ -231,6 +231,64 @@
 			cancelDelete();
 		}
 	}
+
+	// MusicBrainz导入功能
+	let musicbrainzUrl: string = $state('');
+	let importing = $state(false);
+
+	async function importFromMusicBrainz() {
+		if (!musicbrainzUrl.trim()) {
+			toast = { type: 'error', text: '请输入MusicBrainz链接' };
+			return;
+		}
+
+		importing = true;
+		toast = null;
+
+		try {
+			const response = await fetch('/api/musicbrainz', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ url: musicbrainzUrl.trim() })
+			});
+
+			const result = await response.json();
+
+			if (result.success && result.data) {
+				// 填充表单数据
+				const data = result.data;
+				title = data.title || '';
+				releaseArtist = data.releaseArtist || '';
+				publisher = data.publisher || '';
+				description = data.description || '';
+				releaseDate = data.releaseDate || '';
+				releaseCatlogNumber = data.releaseCatlogNumber || '';
+				releaseType = data.releaseType || 'CD';
+				artists = data.artists || [];
+				genres = data.genres || [];
+				customTags = data.customTags || [];
+				relatedReleases = data.relatedReleases || [];
+				externalUrls = data.externalUrls || [];
+				releaseItems = data.releaseItems || [];
+				metaQuality = data.metadataQuality || 5;
+				audioQuality = data.audioQuality || 60;
+				cover = data.cover || '';
+				extendJson = data.extendData ? JSON.stringify(data.extendData, null, 2) : '';
+
+				toast = { type: 'success', text: '成功从MusicBrainz导入数据！' };
+				musicbrainzUrl = ''; // 清空输入框
+			} else {
+				toast = { type: 'error', text: result.error || '导入失败' };
+			}
+		} catch (error) {
+			console.error('导入错误:', error);
+			toast = { type: 'error', text: '导入过程中发生错误' };
+		} finally {
+			importing = false;
+		}
+	}
 </script>
 
 <div class="mx-auto p-6 md:columns-2">
@@ -240,6 +298,46 @@
 			<h1 class="text-3xl font-bold">{m['edit.title']()}</h1>
 			<p class="text-base-content/70">ID: {data.release.id}</p>
 		</div>
+
+		<!-- MusicBrainz导入分组 -->
+		<fieldset class="fieldset bg-primary/10 border-primary/30 rounded-box p-4">
+			<legend class="fieldset-legend text-xl text-primary">从MusicBrainz导入</legend>
+			<div class="space-y-3">
+				<div class="text-sm text-base-content/70">
+					输入MusicBrainz发行版本链接，例如：https://musicbrainz.org/release/f4abd0e4-8e6e-41f7-b9d1-e4e1e5be2496
+				</div>
+				<div class="join w-full">
+					<input
+						type="url"
+						placeholder="https://musicbrainz.org/release/..."
+						class="input input-bordered join-item flex-1"
+						bind:value={musicbrainzUrl}
+						disabled={importing}
+					/>
+					<button
+						type="button"
+						class="btn btn-primary join-item"
+						disabled={importing || !musicbrainzUrl.trim()}
+						onclick={importFromMusicBrainz}
+					>
+						{#if importing}
+							<span class="loading loading-spinner loading-sm"></span>
+							导入中...
+						{:else}
+							<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+								></path>
+							</svg>
+							导入
+						{/if}
+					</button>
+				</div>
+			</div>
+		</fieldset>
 
 		<!-- 基本信息分组 -->
 		<fieldset class="fieldset bg-base-200 border-base-300 rounded-box p-4">

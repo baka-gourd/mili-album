@@ -23,9 +23,40 @@
 
 	const links = $state<LinkItem[]>([]);
 	let newLinkUrl = $state('');
+	let isInitialized = $state(false);
 
+	// 初始化：外部 items 变化时更新内部 links
 	$effect(() => {
-		items = links.map((x) => x.url);
+		if (!isInitialized && items !== undefined) {
+			// 初始化时从外部 items 填充内部 links（包括空数组）
+			const newLinks = items.map((url) => ({
+				id: generateId(),
+				url: url,
+				detectedType: detectLinkType(url, prefixes),
+				isEditing: false
+			}));
+			links.splice(0, links.length, ...newLinks);
+			isInitialized = true;
+		} else if (isInitialized) {
+			// 已初始化后，检查外部 items 变化
+			const currentUrls = links.map((l) => l.url);
+			if (JSON.stringify(currentUrls) !== JSON.stringify(items)) {
+				const newLinks = items.map((url) => ({
+					id: generateId(),
+					url: url,
+					detectedType: detectLinkType(url, prefixes),
+					isEditing: false
+				}));
+				links.splice(0, links.length, ...newLinks);
+			}
+		}
+	});
+
+	// 内部 links 变化时更新外部 items（但不在初始化时触发）
+	$effect(() => {
+		if (isInitialized) {
+			items = links.map((x) => x.url);
+		}
 	});
 
 	function generateId() {
