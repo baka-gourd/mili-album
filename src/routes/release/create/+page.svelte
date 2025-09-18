@@ -116,19 +116,12 @@
 
 			if (result.type === 'success' || result.ok) {
 				toast = { type: 'success', text: m['create.toast.success']() };
-				// 获取创建的release ID并重定向到信息页面
-				let releaseId;
-				if (result.data) {
-					const data = JSON.parse(result.data);
-					releaseId = data[0]?.id;
-				} else if (result.ok) {
-					// 从服务器响应中获取ID
-					releaseId = result.id;
-				}
-
-				if (releaseId) {
+				// Optionally redirect or reset form
+				const data = JSON.parse(result.data);
+				const idIndex = data[0].id;
+				if (idIndex) {
 					setTimeout(() => {
-						goto(`/release/${releaseId}`);
+						goto(`/release/${data[idIndex]}`);
 					}, 2000);
 				} else {
 					setTimeout(() => {
