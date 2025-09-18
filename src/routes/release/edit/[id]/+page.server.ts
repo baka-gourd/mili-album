@@ -2,6 +2,7 @@ import type { PageServerLoad, Actions } from './$types';
 import { fail, error } from '@sveltejs/kit';
 import { getIndex } from '$lib/server/meili/index.js';
 import { autoConvertText } from '$lib/server/utils/textConverter.js';
+import { requireWriteReleaseOrRedirect } from '$lib/server/auth/guard.js';
 
 type Release = {
 	id: string;
@@ -35,8 +36,10 @@ function isValidUrl(u: string) {
 	}
 }
 
-export const load: PageServerLoad = async ({ params }) => {
-	const { id } = params;
+export const load: PageServerLoad = async (event) => {
+	requireWriteReleaseOrRedirect(event);
+
+	const { id } = event.params;
 
 	if (!id) {
 		throw error(400, 'Release ID is required');
@@ -61,8 +64,10 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions: Actions = {
-	delete: async ({ params }) => {
-		const { id } = params;
+	delete: async (event) => {
+		requireWriteReleaseOrRedirect(event);
+
+		const { id } = event.params;
 
 		if (!id) {
 			return fail(400, { ok: false, error: 'Release ID is required' });
@@ -79,15 +84,17 @@ export const actions: Actions = {
 		}
 	},
 
-	update: async ({ request, params }) => {
-		const { id } = params;
+	update: async (event) => {
+		requireWriteReleaseOrRedirect(event);
+
+		const { id } = event.params;
 
 		if (!id) {
 			return fail(400, { ok: false, error: 'Release ID is required' });
 		}
 
 		try {
-			const formData = await request.formData();
+			const formData = await event.request.formData();
 
 			// Get form data - note that we need to handle JSON data differently in actions
 			const jsonData = formData.get('data');

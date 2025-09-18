@@ -1,6 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import { getIndex } from '$lib/server/meili/index.js';
+import { requirePublicReadOrRedirect } from '$lib/server/auth/guard.js';
 
 type Release = {
 	id: string;
@@ -25,8 +26,10 @@ type Release = {
 	extendData?: Record<string, string>;
 };
 
-export const load: PageServerLoad = async ({ params }) => {
-	const { id } = params;
+export const load: PageServerLoad = async (event) => {
+	requirePublicReadOrRedirect(event);
+
+	const { id } = event.params;
 
 	if (!id) {
 		throw error(400, 'Release ID is required');

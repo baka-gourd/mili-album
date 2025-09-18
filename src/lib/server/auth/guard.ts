@@ -8,6 +8,17 @@ export function hasPublicRead(user: User | undefined | null) {
 	return user.grants?.some((g) => g?.verbs?.has?.('read') && g.scope === 'public') ?? false;
 }
 
+export function hasWriteRelease(user: User | undefined | null) {
+	if (!user) return false;
+	return (
+		user.grants?.some(
+			(g) =>
+				(g?.verbs?.has?.('write') && g.scope === 'release') ||
+				(g?.verbs?.has?.('admin') && g.scope === '*')
+		) ?? false
+	);
+}
+
 export function requirePublicReadOrRedirect(event: RequestEvent) {
 	const user = event.locals.user as User | undefined;
 	if (!hasPublicRead(user)) throw redirect(303, '/login');
@@ -17,5 +28,18 @@ export function requirePublicReadOrRedirect(event: RequestEvent) {
 export function requirePublicReadOrFail(event: RequestEvent) {
 	const user = event.locals.user as User | undefined;
 	if (!hasPublicRead(user)) throw error(401, 'Unauthorized');
+	return user!;
+}
+
+export function requireWriteReleaseOrRedirect(event: RequestEvent) {
+	const user = event.locals.user as User | undefined;
+	if (!hasWriteRelease(user)) throw redirect(303, '/login');
+	return user!;
+}
+
+export function requireWriteReleaseOrFail(event: RequestEvent) {
+	const user = event.locals.user as User | undefined;
+	if (!hasWriteRelease(user))
+		throw error(403, 'Forbidden: write@release or admin@* permission required');
 	return user!;
 }

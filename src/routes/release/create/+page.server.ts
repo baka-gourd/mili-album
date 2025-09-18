@@ -2,6 +2,7 @@ import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
 import { getIndex } from '$lib/server/meili/index.js';
 import { autoConvertText } from '$lib/server/utils/textConverter.js';
+import { requireWriteReleaseOrRedirect } from '$lib/server/auth/guard.js';
 
 type Release = {
 	id: string;
@@ -35,14 +36,16 @@ function isValidUrl(u: string) {
 	}
 }
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async (event) => {
+	requireWriteReleaseOrRedirect(event);
 	return {};
 };
 
 export const actions: Actions = {
-	create: async ({ request }) => {
+	create: async (event) => {
+		requireWriteReleaseOrRedirect(event);
 		try {
-			const formData = await request.formData();
+			const formData = await event.request.formData();
 
 			// Get form data - note that we need to handle JSON data differently in actions
 			const jsonData = formData.get('data');
